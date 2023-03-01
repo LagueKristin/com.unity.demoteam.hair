@@ -3,6 +3,7 @@ using UnityEngine.Rendering;
 using UnityEditor;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine.UIElements;
 
 #if HAS_PACKAGE_UNITY_ALEMBIC
 using UnityEngine.Formats.Alembic.Importer;
@@ -15,6 +16,7 @@ namespace Unity.DemoTeam.Hair
 	[CustomEditor(typeof(HairAsset))]
 	public class HairAssetEditor : Editor
 	{
+
 		Editor editorCustomData;
 		Editor editorCustomPlacement;
 
@@ -42,6 +44,7 @@ namespace Unity.DemoTeam.Hair
 
 		HairSim.SolverData[] previewData;
 		string previewDataChecksum;
+		private bool isDrawingInSceneView;
 
 		void OnEnable()
 		{
@@ -123,6 +126,9 @@ namespace Unity.DemoTeam.Hair
 			if (hairAsset == null)
 				return;
 
+			var selectedObject = Selection.activeObject;
+			isDrawingInSceneView = (selectedObject as GameObject)?.GetComponent<HairInstance>() != null;
+			
 			EditorGUILayout.BeginVertical(EditorStyles.inspectorFullWidthMargins);
 			{
 				EditorGUILayout.LabelField("Importer", EditorStyles.centeredGreyMiniLabel);
@@ -132,16 +138,19 @@ namespace Unity.DemoTeam.Hair
 				}
 				EditorGUILayout.EndVertical();
 
-				EditorGUILayout.Space();
-				EditorGUILayout.LabelField("Strand Groups", EditorStyles.centeredGreyMiniLabel);
-				EditorGUILayout.BeginVertical(HairGUIStyles.settingsBox);
+				if (!isDrawingInSceneView)
 				{
-					DrawStrandGroupsGUI();
-				}
-				EditorGUILayout.EndVertical();
+					EditorGUILayout.Space();
+					EditorGUILayout.LabelField("Strand Groups", EditorStyles.centeredGreyMiniLabel);
+					EditorGUILayout.BeginVertical(HairGUIStyles.settingsBox);
+					{
+						DrawStrandGroupsGUI();
+					}
+					EditorGUILayout.EndVertical();
 
-				EditorGUILayout.Space();
-				EditorGUILayout.LabelField(hairAsset.checksum, EditorStyles.centeredGreyMiniLabel);
+					EditorGUILayout.Space();
+					EditorGUILayout.LabelField(hairAsset.checksum, EditorStyles.centeredGreyMiniLabel);
+				}
 			}
 			EditorGUILayout.EndVertical();
 		}

@@ -1,5 +1,10 @@
 Shader "Hair/Default/HairMaterialDefaultUnlit"
 {
+	Properties
+    {
+	    _Color ("Color", Color) = (0.5, 0.5, 0.5, 1.0)
+    }
+	
 	HLSLINCLUDE
 
 	#pragma target 5.0

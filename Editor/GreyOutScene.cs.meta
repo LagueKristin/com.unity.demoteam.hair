@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: bfe67ac5258b3914ba3b73cf4ec79040
+guid: 04e8529ae7872cc4fb22cff131c4a363
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - HairAssetOverlayUXML: {fileID: 9197481963319205126, guid: 9a94e70d112d8b445a47ce2c15e61d2e,
-      type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

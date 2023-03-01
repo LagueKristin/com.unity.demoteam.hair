@@ -22,6 +22,8 @@ namespace Unity.DemoTeam.Hair
 		SerializedProperty _settingsVolume;
 		SerializedProperty _settingsDebug;
 
+		private HairOverlayPanel _hairPanel;
+
 		void OnEnable()
 		{
 			_strandGroupProviders = serializedObject.FindProperty(nameof(HairInstance.strandGroupProviders));
@@ -31,10 +33,16 @@ namespace Unity.DemoTeam.Hair
 			_settingsSystem = serializedObject.FindProperty(nameof(HairInstance.settingsSystem));
 			_settingsVolume = serializedObject.FindProperty(nameof(HairInstance.settingsVolume));
 			_settingsDebug = serializedObject.FindProperty(nameof(HairInstance.settingsDebug));
+			
+			_hairPanel = new HairOverlayPanel();
+			SceneView.lastActiveSceneView.overlayCanvas.Add(_hairPanel);
 		}
 
 		void OnDisable()
 		{
+			if(_hairPanel != null)
+				SceneView.lastActiveSceneView.overlayCanvas.Remove(_hairPanel);
+			
 			foreach (var hairAssetEditor in hairAssetEditorMap.Values)
 			{
 				if (hairAssetEditor != null)
