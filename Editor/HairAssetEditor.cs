@@ -13,7 +13,7 @@ namespace Unity.DemoTeam.Hair
 	using static HairGUILayout;
 
 	//[CustomEditor(typeof(HairAsset))]
-	public class HairAssetEditor : Editor
+	/*public class HairAssetEditor : Editor
 	{
 		Editor editorCustomData;
 		Editor editorCustomPlacement;
@@ -667,5 +667,5 @@ namespace Unity.DemoTeam.Hair
 
 			return false;// not dragging
 		}
-	}
+	}*/
 }

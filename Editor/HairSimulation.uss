@@ -1,0 +1,3 @@
+.unity-foldout__toggle {
+    background-color: var(--unity-colors-app_toolbar_button-background-checked);
+}

@@ -235,7 +235,7 @@ namespace Unity.DemoTeam.Hair
 							break;
 						}
 
-						if (property_hairAssetQuickEdit.boolValue)
+						/*if (property_hairAssetQuickEdit.boolValue)
 						{
 							var hairAsset = property_hairAsset.objectReferenceValue as HairAsset;
 							if (hairAsset != null)
@@ -251,7 +251,7 @@ namespace Unity.DemoTeam.Hair
 								}
 								EditorGUILayout.EndVertical();
 							}
-						}
+						}*/
 					}
 				}
 
