@@ -15,7 +15,6 @@ using UnityEngine.Formats.Alembic.Importer;
 
 namespace Unity.DemoTeam.Hair
 {
-	[CreateAssetMenu(menuName = "Hair/Hair Asset", order = 350), PreferBinarySerialization]
 	public class HairAsset : ScriptableObject, ISerializationCallbackReceiver
 	{
 		public enum Type

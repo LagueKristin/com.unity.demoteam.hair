@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 37f4ef5ce50afa74aa40c8cca41d792a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - ProceduralUXML: {fileID: 9197481963319205126, guid: 0301b70d99caeed4caabd807d747a45c,
+      type: 3}
+  - AlembicUXML: {fileID: 9197481963319205126, guid: 29f68b13d306c9848a5d5a8bcc95e944,
+      type: 3}
+  - CustomUXML: {fileID: 9197481963319205126, guid: 81dc29b5206736841ae23ac47ce09f7a,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

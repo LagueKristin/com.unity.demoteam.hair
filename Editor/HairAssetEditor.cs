@@ -12,7 +12,7 @@ namespace Unity.DemoTeam.Hair
 {
 	using static HairGUILayout;
 
-	[CustomEditor(typeof(HairAsset))]
+	//[CustomEditor(typeof(HairAsset))]
 	public class HairAssetEditor : Editor
 	{
 		Editor editorCustomData;
