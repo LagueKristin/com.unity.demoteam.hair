@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Reflection;
 using Unity.DemoTeam.Hair;
 using UnityEditor;
@@ -30,10 +29,7 @@ public class UpdatedHairAssetEditor : Editor
         switch (targetScript.settingsBasic.type)
         {
             case HairAsset.Type.Procedural:
-
-                //StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Packages/com.unity.demoteam.hair/Editor/HairSimulation.uss");
                 ProceduralUXML.CloneTree(root);
-                //root.styleSheets.Add(styleSheet);
                 SetupProceduralUI();
                 break;
             
@@ -59,43 +55,41 @@ public class UpdatedHairAssetEditor : Editor
             return;
         }
 
-        root.Q<EnumField>("memoryLayoutEF").Bind(serializedObject);
-
         Toggle lodGeneration = root.Q<Toggle>("lodGenerationTG");
-        lodGeneration.Bind(serializedObject);
-
         EnumField lodClusteringMode = root.Q<EnumField>("lodClusteringEF");
-        lodClusteringMode.Bind(serializedObject);
+        VisualElement lodSettings = root.Q<VisualElement>("lodSettingsVE");
+        
+        SetLodSettings();
 
-        lodGeneration.RegisterValueChangedCallback(evt => lodClusteringMode.style.display = targetScript.settingsBasic.kLODClusters ? DisplayStyle.Flex : DisplayStyle.None);
+        lodGeneration.RegisterValueChangedCallback(evt =>
+        {
+            SetLodSettings();
+        });
+
+        void SetLodSettings()
+        {
+            lodClusteringMode.style.display = targetScript.settingsBasic.kLODClusters ? DisplayStyle.Flex : DisplayStyle.None;
+            lodSettings.style.display = targetScript.settingsBasic.kLODClusters ? DisplayStyle.Flex : DisplayStyle.None;
+        }
 
         EnumField placement = root.Q<EnumField>("placementEF");
-        placement.Bind(serializedObject);
-
         EnumField placementPrimitive = root.Q<EnumField>("primitiveEF");
-        placementPrimitive.Bind(serializedObject);
-
         ObjectField placementProvider = root.Q<ObjectField>("placementProviderOF");
-        placementProvider.Bind(serializedObject);
-
         ObjectField placementMesh = root.Q<ObjectField>("placementMeshOF");
-        placementMesh.Bind(serializedObject);
-
         MaskField placementMeshGroups = root.Q<MaskField>("placementGroupsMF");
-        placementMeshGroups.Bind(serializedObject);
-
         ObjectField mappedDensity = root.Q<ObjectField>("mappedDensityOF");
-        mappedDensity.Bind(serializedObject);
-
         ObjectField mappedDirection = root.Q<ObjectField>("mappedDirectionOF");
-        mappedDirection.Bind(serializedObject);
-
         ObjectField mappedParameters = root.Q<ObjectField>("mappedParametersOF");
-        mappedParameters.Bind(serializedObject);
-
+      
+        SetPlacementSettings();
+        
         placement.RegisterValueChangedCallback(evt =>
         {
-            Debug.Log("Should repaint now");
+            SetPlacementSettings();
+        });
+
+        void SetPlacementSettings()
+        {
             placementPrimitive.style.display = targetScript.settingsProcedural.placement == HairAsset.SettingsProcedural.PlacementType.Primitive ? DisplayStyle.Flex : DisplayStyle.None;
             placementProvider.style.display = targetScript.settingsProcedural.placement == HairAsset.SettingsProcedural.PlacementType.Custom ? DisplayStyle.Flex : DisplayStyle.None;
             placementMesh.style.display = targetScript.settingsProcedural.placement == HairAsset.SettingsProcedural.PlacementType.Mesh ? DisplayStyle.Flex : DisplayStyle.None;
@@ -103,60 +97,53 @@ public class UpdatedHairAssetEditor : Editor
             mappedDensity.style.display = targetScript.settingsProcedural.placement == HairAsset.SettingsProcedural.PlacementType.Mesh ? DisplayStyle.Flex : DisplayStyle.None;
             mappedDirection.style.display = targetScript.settingsProcedural.placement == HairAsset.SettingsProcedural.PlacementType.Mesh ? DisplayStyle.Flex : DisplayStyle.None;
             mappedParameters.style.display = targetScript.settingsProcedural.placement == HairAsset.SettingsProcedural.PlacementType.Mesh ? DisplayStyle.Flex : DisplayStyle.None;
-        });
+        }
         
         SliderInt strandCount = root.Q<SliderInt>("strandcountSD");
         strandCount.highValue = HairSim.MAX_STRAND_COUNT;
         strandCount.lowValue = HairSim.MIN_STRAND_COUNT;
-        strandCount.Bind(serializedObject);
 
         SliderInt strandParticleCount = root.Q<SliderInt>("strandParticleCountSD");
         strandParticleCount.highValue = HairSim.MAX_STRAND_PARTICLE_COUNT;
         strandParticleCount.lowValue = HairSim.MIN_STRAND_PARTICLE_COUNT;
-        strandParticleCount.Bind(serializedObject);
-
-        Slider strandLength = root.Q<Slider>("strandLengthSD");
-        strandLength.Bind(serializedObject);
-
+        
         Toggle strandLengthVariation = root.Q<Toggle>("strandLengthVariationTG");
-        strandLengthVariation.Bind(serializedObject);
-
         Slider strandLengthVariationAmount = root.Q<Slider>("strandLengthVariantionFactorSD");
-        strandLengthVariationAmount.Bind(serializedObject);
+        
+        SetLengthVariationSetting();
 
-        strandLengthVariation.RegisterValueChangedCallback(evt => strandLengthVariationAmount.style.display = targetScript.settingsProcedural.strandLengthVariation ? DisplayStyle.Flex : DisplayStyle.None);
+        strandLengthVariation.RegisterValueChangedCallback(evt => SetLengthVariationSetting());
 
+        void SetLengthVariationSetting()
+        {
+            strandLengthVariationAmount.style.display = targetScript.settingsProcedural.strandLengthVariation
+                ? DisplayStyle.Flex
+                : DisplayStyle.None;
+        }
         Toggle curl = root.Q<Toggle>("curlTG");
-        curl.Bind(serializedObject);
-
         Slider curlRadius = root.Q<Slider>("curlRadiusSD");
         curlRadius.highValue = 10.0f;
         curlRadius.lowValue = 0.0f;
-        curlRadius.Bind(serializedObject);
 
         Slider curlSlope = root.Q<Slider>("curlSlopeSD");
         curlSlope.highValue = 1.0f;
         curlSlope.lowValue = 0.0f;
-        curlSlope.Bind(serializedObject);
 
         Toggle curlVariation = root.Q<Toggle>("curlVariationTG");
-        curlVariation.Bind(serializedObject);
-        
         Slider curlVariationRadius = root.Q<Slider>("curlVariationRadiusSD");
         curlVariationRadius.highValue = 1.0f;
         curlVariationRadius.lowValue = 0.0f;
-        curlVariationRadius.Bind(serializedObject);
 
         Slider curlVariationSlope = root.Q<Slider>("curlVariationSlopeSD");
         curlVariationSlope.highValue = 1.0f;
         curlVariationSlope.lowValue = 0.0f;
-        curlVariationSlope.Bind(serializedObject);
 
         EnumField curlSamplingStrategy = root.Q<EnumField>("curlSamplingEF");
-        curlSamplingStrategy.Bind(serializedObject);
 
         curl.RegisterCallback<ChangeEvent<bool>>(evt => RedrawCurlSettings());
         curlVariation.RegisterValueChangedCallback(evt => RedrawCurlSettings());
+        
+        RedrawCurlSettings();
         
         void RedrawCurlSettings()
         {
@@ -167,6 +154,66 @@ public class UpdatedHairAssetEditor : Editor
             curlVariationRadius.style.display = targetScript.settingsProcedural.curlVariation && targetScript.settingsProcedural.curl ? DisplayStyle.Flex : DisplayStyle.None;
             curlVariationSlope.style.display = targetScript.settingsProcedural.curlVariation && targetScript.settingsProcedural.curl ? DisplayStyle.Flex : DisplayStyle.None;
         }
+
+        EnumField lodClusterAllocation = root.Q<EnumField>("clusterAllocationEF");
+        EnumField lodClusterAllocationOrder = root.Q<EnumField>("clusterAllocationOrderEF");
+
+        SetClustorAllocationSetting();
+        
+        lodClusterAllocation.RegisterValueChangedCallback(evt => SetClustorAllocationSetting());
+
+        void SetClustorAllocationSetting()
+        {
+            lodClusterAllocationOrder.style.display = targetScript.settingsLODClusters.clusterAllocation != ClusterAllocationPolicy.Global ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        Toggle lodClusterRefinement = root.Q<Toggle>("clusterRefinementTG");
+        SliderInt clusterRefinementValue = root.Q<SliderInt>("clusterRefinementValueSD");
+        
+        SetClusterRefinementSetting();
+
+        lodClusterRefinement.RegisterValueChangedCallback(evt => SetClusterRefinementSetting());
+
+        void SetClusterRefinementSetting()
+        {
+            clusterRefinementValue.style.display = targetScript.settingsLODClusters.clusterRefinement
+                ? DisplayStyle.Flex
+                : DisplayStyle.None;
+        }
+        
+        Toggle highLOD = root.Q<Toggle>("highLODTG");
+        EnumField highLodMode = root.Q<EnumField>("HighLODEF");
+        ListView highLodClusters = root.Q<ListView>("highLodClustersLV");
+
+        SetLodModeSettings();
+
+        highLOD.RegisterValueChangedCallback(evt =>
+        {
+            SetLodModeSettings();
+        });
+
+        void SetLodModeSettings()
+        {
+            highLodMode.style.display =
+                targetScript.settingsLODClusters.highLOD.highLOD ? DisplayStyle.Flex : DisplayStyle.None;
+            highLodClusters.style.display = targetScript.settingsLODClusters.highLOD.highLOD && targetScript.settingsLODClusters.highLOD.highLODMode == HairAsset.SettingsLODClusters.HighLODMode.Manual ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        highLodMode.RegisterValueChangedCallback(evt =>
+        {
+            SetLodModeSettings();
+        });
+
+        Button buildStrandGroupButton = root.Q<Button>("buildStrandGroupBT");
+        buildStrandGroupButton.clicked -= BuildStrandGroupButtonClicked;
+        buildStrandGroupButton.clicked += BuildStrandGroupButtonClicked;
+
+    }
+
+    private void BuildStrandGroupButtonClicked()
+    {
+        HairAssetBuilder.BuildHairAsset(targetScript);
+        serializedObject.Update();
     }
 
     private void SetupAlembicUI() { }

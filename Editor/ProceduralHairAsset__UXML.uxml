@@ -1,7 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:EnumField label="Memory Layout" value="Interleaved" name="memoryLayoutEF" binding-path="settingsBasic.memoryLayout" />
-    <ui:Toggle label="LOD Generation" name="lodGenerationTG" binding-path="settingsBasic.kLODClusters" />
-    <ui:EnumField label="LOD Clustering" value="Roots" name="lodClusteringEF" binding-path="settingsBasic.kLODClustersClustering" />
+    <ui:Foldout text="General" style="-unity-font-style: bold;">
+        <ui:EnumField label="Memory Layout" value="Interleaved" name="memoryLayoutEF" binding-path="settingsBasic.memoryLayout" style="-unity-font-style: normal;" />
+        <ui:Toggle label="Enable LOD" name="lodGenerationTG" binding-path="settingsBasic.kLODClusters" style="-unity-font-style: normal;" />
+        <ui:EnumField label="LOD Clustering" value="Roots" name="lodClusteringEF" binding-path="settingsBasic.kLODClustersClustering" style="-unity-font-style: normal;" />
+        <ui:Toggle label="Auto Rebuild" name="autoBuildTG" style="-unity-font-style: normal;" />
+        <ui:Button text="Build Strand Groups" name="buildStrandGroupBT" style="-unity-font-style: normal;" />
+    </ui:Foldout>
     <ui:Foldout text="Roots" name="rootsFO" style="-unity-font-style: bold;">
         <ui:EnumField label="Placement" value="Primitive" name="placementEF" binding-path="settingsProcedural.placement" style="-unity-font-style: normal;" />
         <ui:EnumField label="Placement Primitive" value="Curtain" name="primitiveEF" binding-path="settingsProcedural.placementPrimitive" style="-unity-font-style: normal;" />
@@ -16,20 +20,34 @@
         <ui:SliderInt label="Count" value="42" name="strandcountSD" show-input-field="true" binding-path="settingsProcedural.strandCount" style="flex-grow: 1; -unity-font-style: normal;" />
         <ui:SliderInt label="Particle Count" value="42" name="strandParticleCountSD" show-input-field="true" inverted="false" binding-path="settingsProcedural.strandParticleCount" style="flex-grow: 1; -unity-font-style: normal;" />
         <ui:Slider label="Length" value="1" high-value="5" binding-path="settingsProcedural.strandLength" name="strandLengthSD" low-value="0.0001" show-input-field="true" style="-unity-font-style: normal;" />
-        <ui:Toggle label="Length Variation" name="strandLengthVariationTG" binding-path="settingsProcedural.strandLengthVariation" style="-unity-font-style: normal;" />
-        <ui:Slider label="Length Factor" value="42" high-value="1" show-input-field="true" name="strandLengthVariantionFactorSD" binding-path="settingsProcedural.strandLengthVariationAmount" class="unity-foldout__content" style="-unity-font-style: normal;" />
+        <ui:Toggle label="Enable Variation" name="strandLengthVariationTG" binding-path="settingsProcedural.strandLengthVariation" style="-unity-font-style: normal;" />
+        <ui:Slider label="Length Variation" value="42" high-value="1" show-input-field="true" name="strandLengthVariantionFactorSD" binding-path="settingsProcedural.strandLengthVariationAmount" style="-unity-font-style: normal;" />
     </ui:Foldout>
     <ui:Foldout text="Curl" value="true" style="-unity-font-style: bold;">
-        <ui:Toggle label="Enable Curl" binding-path="settingsProcedural.curl" name="curlTG" style="-unity-font-style: normal;" />
-        <ui:VisualElement class="unity-foldout__content" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-            <ui:EnumField label="Sampling Strategy" value="Center" name="curlSamplingEF" binding-path="settingsProcedural.curlSamplingStrategy" style="-unity-font-style: normal;" />
-            <ui:Slider label="Radius" value="42" high-value="100" name="curlRadiusSD" show-input-field="true" binding-path="settingsProcedural.curlRadius" style="-unity-font-style: normal;" />
-            <ui:Slider label="Slope" value="42" high-value="100" name="curlSlopeSD" show-input-field="true" binding-path="settingsProcedural.curlSlope" style="-unity-font-style: normal;" />
-            <ui:Toggle label="Variation" name="curlVariationTG" binding-path="settingsProcedural.curlVariation" style="-unity-font-style: normal;" />
-            <ui:VisualElement class="unity-foldout__content" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
-                <ui:Slider label="Radius Factor" value="42" high-value="100" name="curlVariationRadiusSD" show-input-field="true" binding-path="settingsProcedural.curlVariationRadius" style="-unity-font-style: normal;" />
-                <ui:Slider label="Slope Factor" value="42" high-value="100" name="curlVariationSlopeSD" show-input-field="true" binding-path="settingsProcedural.curlVariationSlope" style="-unity-font-style: normal;" />
-            </ui:VisualElement>
-        </ui:VisualElement>
+        <ui:Toggle label="Enable" binding-path="settingsProcedural.curl" name="curlTG" style="-unity-font-style: normal;" />
+        <ui:EnumField label="Sampling Strategy" value="Center" name="curlSamplingEF" binding-path="settingsProcedural.curlSamplingStrategy" style="-unity-font-style: normal;" />
+        <ui:Slider label="Radius" value="42" high-value="100" name="curlRadiusSD" show-input-field="true" binding-path="settingsProcedural.curlRadius" style="-unity-font-style: normal;" />
+        <ui:Slider label="Slope" value="42" high-value="100" name="curlSlopeSD" show-input-field="true" binding-path="settingsProcedural.curlSlope" style="-unity-font-style: normal;" />
+        <ui:Toggle label="Enable Variation" name="curlVariationTG" binding-path="settingsProcedural.curlVariation" style="-unity-font-style: normal;" />
+        <ui:Slider label="Radius Variation" value="42" high-value="100" name="curlVariationRadiusSD" show-input-field="true" binding-path="settingsProcedural.curlVariationRadius" style="-unity-font-style: normal;" />
+        <ui:Slider label="Slope Variation" value="42" high-value="100" name="curlVariationSlopeSD" show-input-field="true" binding-path="settingsProcedural.curlVariationSlope" style="-unity-font-style: normal;" />
     </ui:Foldout>
+    <ui:VisualElement name="lodSettingsVE" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:Foldout text="LOD Clustering" style="-unity-font-style: bold;">
+            <ui:EnumField label="Cluster Void" value="Roots" name="clusterVoidEF" binding-path="settingsLODClusters.clusterVoid" style="-unity-font-style: normal;" />
+            <ui:EnumField label="Cluster Allocation" value="Roots" name="clusterAllocationEF" binding-path="settingsLODClusters.clusterAllocation" style="-unity-font-style: normal;" />
+            <ui:EnumField label="Allocation Order" value="Roots" name="clusterAllocationOrderEF" binding-path="settingsLODClusters.clusterAllocationOrder" style="-unity-font-style: normal;" />
+            <ui:Toggle label="Refine Clusters" name="clusterRefinementTG" binding-path="settingsLODClusters.clusterRefinement" style="-unity-font-style: normal;" />
+            <ui:SliderInt label="Refinement Iterations" value="42" high-value="200" name="clusterRefinementValueSD" show-input-field="true" binding-path="settingsLODClusters.clusterRefinementIterations" low-value="1" style="-unity-font-style: normal;" />
+        </ui:Foldout>
+        <ui:Foldout text="Base LOD" value="true" style="-unity-font-style: bold;">
+            <ui:EnumField label="Base LOD" value="Roots" name="baseLODEF" binding-path="settingsLODClusters.baseLOD.baseLOD" style="-unity-font-style: normal;" />
+            <ui:Slider label="Base Cluster Quantity" value="42" high-value="1" binding-path="settingsLODClusters.baseLODParamsGenerated.baseLODClusterQuantity" show-input-field="true" name="baseLODClusterQuantitySD" style="-unity-font-style: normal;" />
+        </ui:Foldout>
+        <ui:Foldout text="High LOD" value="true" style="-unity-font-style: bold;">
+            <ui:Toggle label="Enable" name="highLODTG" binding-path="settingsLODClusters.highLOD.highLOD" style="-unity-font-style: normal;" />
+            <ui:EnumField label="Mode" value="Roots" name="HighLODEF" binding-path="settingsLODClusters.highLOD.highLODMode" style="-unity-font-style: normal;" />
+            <ui:ListView show-add-remove-footer="true" header-title="High LOD Clusters Quantity" show-foldout-header="true" reorderable="true" show-border="true" name="highLodClustersLV" binding-path="settingsLODClusters.highLODParamsManual.highLODClusterQuantities" style="-unity-font-style: normal;" />
+        </ui:Foldout>
+    </ui:VisualElement>
 </ui:UXML>
