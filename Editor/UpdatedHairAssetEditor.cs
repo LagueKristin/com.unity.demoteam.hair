@@ -122,6 +122,8 @@ public class UpdatedHairAssetEditor : Editor
     private void SetChanges()
     {
         //buildStrandGroupButton.SetEnabled(true);
+        
+        //test
     }
 
     private void DisableFoldoutStyle(Foldout foldout)
