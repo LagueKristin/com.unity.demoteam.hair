@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 [CustomEditor(typeof(HairAsset))]
 public class UpdatedHairAssetEditor : Editor
@@ -32,8 +33,15 @@ public class UpdatedHairAssetEditor : Editor
         switch (targetScript.settingsBasic.type)
         {
             case HairAsset.Type.Procedural:
+                
+                StyleSheet styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Packages/com.unity.demoteam.hair/Editor/HairSystem.uss");
                 ProceduralUXML.CloneTree(root);
+                root.styleSheets.Add(styleSheet);
                 SetupProceduralUI();
+                root.TrackSerializedObjectValue(this.serializedObject, o =>
+                {
+                    Debug.Log("SO CHSNGE");
+                });
                 break;
             
             case HairAsset.Type.Alembic:
@@ -46,6 +54,8 @@ public class UpdatedHairAssetEditor : Editor
                 CustomUXML.CloneTree(root);
                 break;
         }
+        
+        SubscribeToAllElementChanges();
 
         return root;
     }
@@ -57,7 +67,15 @@ public class UpdatedHairAssetEditor : Editor
             Debug.LogError("Something unexpected happened and we couldn't find the root visual element");
             return;
         }
-        
+
+        root.schedule.Execute(() =>
+        {
+            if (GUI.changed)
+            {
+                Debug.Log("TEEEEST");
+            }
+        }).Every(100);
+
         DrawRootSettings();
         DrawStrandsSettings();
         DrawCurlSettings();
@@ -67,9 +85,9 @@ public class UpdatedHairAssetEditor : Editor
 
     private void BuildStrandGroupButtonClicked()
     {
+        Debug.Log("BUILD");
         HairAssetBuilder.BuildHairAsset(targetScript);
-        serializedObject.Update(); 
-        //buildStrandGroupButton.SetEnabled(false);
+        serializedObject.Update();
     }
 
     private void SetupAlembicUI() { }
@@ -119,11 +137,59 @@ public class UpdatedHairAssetEditor : Editor
         Selection.activeObject = addedAsset;
     }
 
-    private void SetChanges()
+    private void SubscribeToAllElementChanges()
     {
-        //buildStrandGroupButton.SetEnabled(true);
-        
-        //test
+        root.Query<EnumField>().ForEach(field =>
+        {
+            field.UnregisterValueChangedCallback(ChangeEventCheck);
+            field.RegisterValueChangedCallback(ChangeEventCheck);
+        });
+
+        root.Query<ObjectField>().ForEach(field =>
+        {
+            field.UnregisterValueChangedCallback(ChangeEventCheck);
+            field.RegisterValueChangedCallback(ChangeEventCheck);
+        });
+
+        root.Query<MaskField>().ForEach(field =>
+        {
+            field.UnregisterValueChangedCallback(ChangeEventCheck);
+            field.RegisterValueChangedCallback(ChangeEventCheck);
+        });
+
+        root.Query<SliderInt>().ForEach(slider =>
+        {
+            slider.UnregisterValueChangedCallback(ChangeEventCheck);
+            slider.RegisterValueChangedCallback(ChangeEventCheck);
+
+        });
+
+        root.Query<Slider>().ForEach(slider =>
+        {
+            slider.UnregisterValueChangedCallback(ChangeEventCheck);
+            slider.RegisterValueChangedCallback(ChangeEventCheck);
+        });
+
+        root.Query<Toggle>().ForEach(toggle =>
+        {
+            toggle.UnregisterValueChangedCallback(ChangeEventCheck);
+            toggle.RegisterValueChangedCallback(ChangeEventCheck);
+        });
+    }
+
+    private void CheckForAutoGenerate()
+    {
+        serializedObject.ApplyModifiedProperties();
+        if (targetScript.strandGroupsAutoBuild)
+        {
+            BuildStrandGroupButtonClicked();
+        }
+    }
+
+    private void ChangeEventCheck<T>(ChangeEvent<T> evt)
+    {
+        Debug.Log("Something changed!");
+        CheckForAutoGenerate();
     }
 
     private void DisableFoldoutStyle(Foldout foldout)
@@ -152,9 +218,8 @@ public class UpdatedHairAssetEditor : Editor
         ObjectField mappedDensity = root.Q<ObjectField>("mappedDensityOF");
         ObjectField mappedDirection = root.Q<ObjectField>("mappedDirectionOF");
         ObjectField mappedParameters = root.Q<ObjectField>("mappedParametersOF");
-        
-        placement.RegisterValueChangedCallback(evt => SetChanges());
 
+        
         Refresh();
 
         placement.RegisterValueChangedCallback(evt =>  Refresh());
@@ -177,7 +242,7 @@ public class UpdatedHairAssetEditor : Editor
         SliderInt strandParticleCount = root.Q<SliderInt>("strandParticleCountSD");
         Toggle strandLengthVariation = root.Q<Toggle>("strandLengthVariationTG");
         Slider strandLengthVariationAmount = root.Q<Slider>("strandLengthVariantionFactorSD");
-        
+
         DisableFoldoutStyle(root.Q<Foldout>("lengthVariationFO"));
 
         strandCount.highValue = HairSim.MAX_STRAND_COUNT;

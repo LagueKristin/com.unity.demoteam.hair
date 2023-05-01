@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <ui:Foldout name="buildFO" text="Strand Group" style="-unity-font-style: bold;">
-        <ui:Toggle label="Auto Generate" name="autoBuildTG" style="-unity-font-style: normal; flex-direction: row; justify-content: flex-end; align-self: auto;" />
+        <ui:Toggle label="Auto Generate" name="autoBuildTG" binding-path="strandGroupsAutoBuild" style="-unity-font-style: normal; flex-direction: row; justify-content: flex-end; align-self: auto;" />
         <ui:VisualElement class="unity-base-field" style="display: none;">
             <ui:Label class="unity-base-field__label" />
         </ui:VisualElement>

@@ -1,0 +1,26 @@
+.unity-foldout__toggle {
+    background-color: rgb(50, 50, 50);
+    margin-left: 0;
+    margin-right: 0;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    border-top-color: var(--unity-colors-app_toolbar_button-border);
+    border-bottom-color: var(--unity-colors-app_toolbar_button-border);
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: -15px;
+    padding-right: -15px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.unity-foldout--depth-0 {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
