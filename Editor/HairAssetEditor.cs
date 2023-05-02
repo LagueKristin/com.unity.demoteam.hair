@@ -15,7 +15,7 @@ namespace Unity.DemoTeam.Hair
 	//[CustomEditor(typeof(HairAsset))]
 	public class HairAssetEditor : Editor
 	{
-		Editor editorCustomData;
+		/*Editor editorCustomData;
 		Editor editorCustomPlacement;
 
 		SerializedProperty _settingsBasic;
@@ -666,6 +666,6 @@ namespace Unity.DemoTeam.Hair
 			}
 
 			return false;// not dragging
-		}
+		}*/
 	}
 }

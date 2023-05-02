@@ -44,9 +44,9 @@ namespace Unity.DemoTeam.Hair
 			public Type type;
 			[Tooltip("Memory layout for the generated strands")]
 			public MemoryLayout memoryLayout;
-			[ToggleGroup, Tooltip("Build LOD clusters for the generated strands (allows optionally reducing cost of rendering and/or simulation)")]
+			[Tooltip("Build LOD clusters for the generated strands (allows optionally reducing cost of rendering and/or simulation)")]
 			public bool kLODClusters;
-			[ToggleGroupItem(withLabel = true), Tooltip("Choose how the generated strands are clustered (where Roots == by 3-D root positions, Strands == by n-D strand positions, Strands 3pt == by 9-D quantized strand positions)")]
+			[Tooltip("Choose how the generated strands are clustered (where Roots == by 3-D root positions, Strands == by n-D strand positions, Strands 3pt == by 9-D quantized strand positions)")]
 			public StrandClusterMode kLODClustersClustering;
 
 			public static readonly SettingsBasic defaults = new SettingsBasic()
@@ -95,7 +95,7 @@ namespace Unity.DemoTeam.Hair
 				RelaxCurlSlope,
 			}
 
-			[LineHeader("Roots")]
+			//[LineHeader("Roots")]
 
 			[Tooltip("Root placement method")]
 			public PlacementType placement;
@@ -119,7 +119,7 @@ namespace Unity.DemoTeam.Hair
 			//[ToggleGroupItem, Min(1)]
 			//public uint seedValue;
 
-			[LineHeader("Strands")]
+			//[LineHeader("Strands")]
 
 			[Range(HairSim.MIN_STRAND_COUNT, HairSim.MAX_STRAND_COUNT), Tooltip("Number of strands")]
 			public int strandCount;
@@ -127,24 +127,24 @@ namespace Unity.DemoTeam.Hair
 			public int strandParticleCount;
 			[Range(0.001f, 5.0f), Tooltip("Strand length (in meters)")]
 			public float strandLength;
-			[ToggleGroup, Tooltip("Enable this to vary the strand lengths")]
+			[Tooltip("Enable this to vary the strand lengths")]
 			public bool strandLengthVariation;
-			[ToggleGroupItem, Range(0.0f, 1.0f), Tooltip("Amount of variation as fraction of strand length")]
+			[Range(0.0f, 1.0f), Tooltip("Amount of variation as fraction of strand length")]
 			public float strandLengthVariationAmount;
 
-			[LineHeader("Curls")]
+			//[LineHeader("Curls")]
 
-			[ToggleGroup, Tooltip("Enable this to curl the strands")]
+			[Tooltip("Enable this to curl the strands")]
 			public bool curl;
-			[ToggleGroupItem(withLabel = true), Range(0.0f, 10.0f), Tooltip("Curl radius (in centimeters)")]
+			[Range(0.0f, 10.0f), Tooltip("Curl radius (in centimeters)")]
 			public float curlRadius;
-			[ToggleGroupItem(withLabel = true), Range(0.0f, 1.0f), Tooltip("Curl slope")]
+			[Range(0.0f, 1.0f), Tooltip("Curl slope")]
 			public float curlSlope;
-			[ToggleGroup, Tooltip("Enable this to vary the curls")]
+			[Tooltip("Enable this to vary the curls")]
 			public bool curlVariation;
-			[ToggleGroupItem(withLabel = true), Range(0.0f, 1.0f), Tooltip("Amount of variation as fraction of curl radius")]
+			[Range(0.0f, 1.0f), Tooltip("Amount of variation as fraction of curl radius")]
 			public float curlVariationRadius;
-			[ToggleGroupItem(withLabel = true), Range(0.0f, 1.0f), Tooltip("Amount of variation as fraction of curl slope")]
+			[Range(0.0f, 1.0f), Tooltip("Amount of variation as fraction of curl slope")]
 			public float curlVariationSlope;
 			[Tooltip("Choose which parameter to relax if the curls become undersampled (due to a combination of particle count, strand length, curl radius and slope)")]
 			public CurlSamplingStrategy curlSamplingStrategy;
@@ -291,19 +291,15 @@ namespace Unity.DemoTeam.Hair
 		[Serializable]
 		public struct SettingsLODClusters
 		{
-			[LineHeader("Clustering")]
-
-			//[Min(1), Tooltip("Initial seed (evolved with set)")]
-			//public int initialSeed;
 			[Tooltip("Cluster policy to apply to empty clusters")]
 			public ClusterVoid clusterVoid;
 			[Tooltip("Cluster allocation policy (where Global == Allocate and iterate within full set, Split Global == Allocate within select cluster but iterate within full set, Split Branching == Allocate and iterate solely within split cluster)")]
 			public ClusterAllocationPolicy clusterAllocation;
-			[VisibleIf(nameof(clusterAllocation), CompareOp.Neq, ClusterAllocationPolicy.Global), Tooltip("Cluster allocation order for split-type policies (decides the order in which existing clusters are selected to be split into smaller clusters)")]
+			[Tooltip("Cluster allocation order for split-type policies (decides the order in which existing clusters are selected to be split into smaller clusters)")]
 			public ClusterAllocationOrder clusterAllocationOrder;
-			[ToggleGroup, Tooltip("Enable cluster refinement by k-means iteration")]
+			[Tooltip("Enable cluster refinement by k-means iteration")]
 			public bool clusterRefinement;
-			[ToggleGroupItem, Range(1, 200), Tooltip("Number of k-means iterations (upper bound, may finish earlier)")]
+			[Range(1, 200), Tooltip("Number of k-means iterations (upper bound, may finish earlier)")]
 			public int clusterRefinementIterations;
 
 			public enum BaseLODMode
@@ -321,8 +317,6 @@ namespace Unity.DemoTeam.Hair
 			[Serializable]
 			public struct BaseLOD
 			{
-				[LineHeader("Base LOD")]
-
 				[Tooltip("Choose build path for the lower level clusters (where Generated == Intialize witk k-means++, UV Mapped == Import from cluster maps")]
 				public BaseLODMode baseLOD;
 			}
@@ -352,11 +346,9 @@ namespace Unity.DemoTeam.Hair
 			[Serializable]
 			public struct HighLOD
 			{
-				[LineHeader("High LOD")]
-
-				[ToggleGroup, Tooltip("Enable upper level clusters (will be built using lower level clusters as basis)")]
+				[Tooltip("Enable upper level clusters (will be built using lower level clusters as basis)")]
 				public bool highLOD;
-				[ToggleGroupItem, Tooltip("Choose build path for the upper level clusters")]
+				[Tooltip("Choose build path for the upper level clusters")]
 				public HighLODMode highLODMode;
 			}
 
